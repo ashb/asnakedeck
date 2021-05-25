@@ -1,0 +1,17 @@
+{
+  "template": "https://github.com/timothycrosley/cookiecutter-python",
+  "commit": "4f2a3601ad12239bf6cbeedba8ecf297690ab07f",
+  "checkout": null,
+  "context": {
+    "cookiecutter": {
+      "full_name": "Ash Berlin-Taylor",
+      "email": "ash_github@firemirror.com",
+      "github_username": "ashb",
+      "project_name": "asnakedeck",
+      "description": "AsnycIO StreamDeck controller for Linux",
+      "version": "0.0.1",
+      "_template": "https://github.com/timothycrosley/cookiecutter-python"
+    }
+  },
+  "directory": null
+}

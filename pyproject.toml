@@ -7,7 +7,11 @@ license = "MIT"
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.6"
+python = "^3.9"
+streamdeck = ">= 0.8.4"
+attrs = "*"
+pillow = "*"
+asyncinotify = "^2.0.2"
 
 [tool.poetry.dev-dependencies]
 vulture = "^1.0"
@@ -15,8 +19,8 @@ bandit = "^1.6"
 safety = "^1.8"
 isort = "^5.3"
 flake8-bugbear = "^19.8"
-black = {version = "^18.3-alpha.0", allow-prereleases = true}
-mypy = "^0.730.0"
+black = {version = "*", allow-prereleases = true}
+mypy = "*"
 ipython = "^7.7"
 pytest = "^5.0"
 pytest-cov = "^2.7"

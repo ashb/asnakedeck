@@ -15,3 +15,17 @@ _________________
 _________________
 
 **asnakedeck** AsnycIO StreamDeck controller for Linux
+
+This started out as a clone/hack on [jpetazzo/snakedeck](https://github.com/jpetazzo/snakedeck) but has evolved.
+
+This project
+
+- Uses AsyncIO wherever possible (sadly the reading/polling of the USB device is still threaded)
+
+- Is implemented as packages, not just a flat script
+
+
+License
+-------
+
+This project itself is license under the MIT license.

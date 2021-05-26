@@ -1,0 +1,50 @@
+keys:
+- line: 1
+  column: 1
+  label: Hello,
+- line: 1
+  column: 2
+  label: world!
+- line: 1
+  column: 3
+  label: This
+- line: 1
+  column: 4
+  label: is
+- line: 1
+  column: 5
+  label: world!
+
+- line: 2
+  column: 1
+  label: "Mood:"
+- line: 2
+  column: 2
+  sync: mood
+  cycle:
+  - emoji: 🙂
+  - emoji: 🤣
+  - emoji: 😭
+  - emoji: 🤬
+
+- line: 2
+  column: 3
+  label: "Needs:"
+- line: 2
+  column: 4
+  sync: needs
+  cycle:
+  - emoji: 👍🏻
+  - emoji: 🍝
+  - emoji: 🍺
+  - emoji: 💕
+
+- line: 2
+  column: 5
+  emoji: 🔊
+  volume: true
+  shell: xdotool key XF86AudioMute
+
+- line: 3
+  column: 5
+  clock: "%H:%M:%S"

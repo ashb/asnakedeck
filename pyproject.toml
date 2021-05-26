@@ -5,6 +5,7 @@ description = "AsnycIO StreamDeck controller for Linux"
 authors = ["Ash Berlin-Taylor <ash_github@firemirror.com>"]
 license = "MIT"
 readme = "README.md"
+exclude = ["examples/"]
 
 [tool.poetry.dependencies]
 python = "^3.9"
@@ -12,6 +13,7 @@ streamdeck = ">= 0.8.4"
 attrs = "*"
 pillow = "*"
 asyncinotify = "^2.0.2"
+pluggy = "^0.13.1"
 
 [tool.poetry.dev-dependencies]
 vulture = "^1.0"

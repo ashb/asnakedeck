@@ -693,7 +693,7 @@ python-versions = ">=3.6"
 name = "pluggy"
 version = "0.13.1"
 description = "plugin and hook calling mechanisms for python"
-category = "dev"
+category = "main"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
 
@@ -1080,7 +1080,7 @@ python-versions = "*"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "d8e5bb561ad44109421c1c2ea3823d27d0b7c3ad2b369d2eff215c39a7b9447a"
+content-hash = "30caf4b5c95a44401b9a3e3bf6a83adbf622e8b5826f0e6e1c1c3a01d514cb86"
 
 [metadata.files]
 appdirs = [

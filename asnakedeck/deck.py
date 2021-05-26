@@ -2,10 +2,9 @@ import asyncio
 import logging
 import os
 import subprocess  # nosec
-import time
 from functools import cached_property
 from pathlib import Path
-from typing import TYPE_CHECKING, Dict, Tuple
+from typing import TYPE_CHECKING
 
 import attr
 import yaml
@@ -14,7 +13,7 @@ from PIL import Image, ImageDraw, ImageFont
 from StreamDeck.ImageHelpers import PILHelper
 from StreamDeck.Transport.Transport import TransportError
 
-from .config import CONFIG_DIR
+from .config import CONFIG_DIR, PluginManager
 
 if TYPE_CHECKING:
     from StreamDeck.Devices.StreamDeck import StreamDeck
@@ -26,8 +25,10 @@ log = logging.getLogger(__name__)
 @attr.s(auto_attribs=True)
 class Deck:
     deck: "StreamDeck"
-    keys: Dict = attr.Factory(dict)
-    image_size: Tuple[int, int] = attr.ib(init=False)
+    plugin_manager: PluginManager
+    keys: dict[int, dict] = attr.Factory(dict)
+    key_tasks: dict[int, asyncio.Task] = attr.Factory(dict)
+    image_size: tuple[int, int] = attr.ib(init=False)
 
     def __attrs_post_init__(self):
         self.deck.open()
@@ -53,6 +54,9 @@ class Deck:
     def __del__(self):
         if self.deck.connected():
             self.close()
+
+        for task in self.key_tasks.values():
+            task.cancel("Deck going away")
 
     @cached_property
     def config_file_path(self) -> Path:
@@ -110,6 +114,9 @@ class Deck:
             pass
 
     def close(self, reset=True):
+        for task in self.key_tasks.values():
+            task.cancel("Deck going away")
+
         # Work around issue where the deck doesn't close proplery and segfaults in usbi_mutex_destroy
         if self.deck.read_thread:
             self.deck.run_read_thread = False
@@ -143,17 +150,28 @@ class Deck:
 
         self.config = config
 
+        for task in self.key_tasks.values():
+            task.cancel("Config reloaded")
+
+        key_tasks = {}
+
         for key in self.config["keys"]:
             if "line" in key and "column" in key:
                 # FIXME validate line/column
                 key_number = (key["line"] - 1) * self.deck.KEY_COLS + key["column"] - 1
-                if "clock" in key:
-                    asyncio.get_event_loop().create_task(self.clock_loop(key, key_number))
+                for name in key.keys():
+                    if name in {"line", "column", "emoji", "label"}:
+                        continue
+                    if callback := self.plugin_manager.key_displayers.get(name):
+                        task = asyncio.get_event_loop().create_task(callback(self, key, key_number))
+                        key_tasks[key_number] = task
 
                 self.update_key(key_number, key)
             else:
                 if "PATH" in key:
                     os.environ["PATH"] = key["PATH"] + ":" + os.environ["PATH"]
+
+        self.key_tasks = key_tasks
 
         log.debug("Recondigured %s", self.serial_number)
 
@@ -184,12 +202,6 @@ class Deck:
                 self.deck.set_key_image(key_number, deck_image)
             except TransportError:
                 pass
-
-    async def clock_loop(self, key, key_number):
-        while True:
-            key["label"] = time.strftime("%H:%M:%S")
-            self.update_key(key_number, key)
-            await asyncio.sleep(1)
 
     async def on_keypress(self, deck, key_number, state):
         pressed_or_released = "pressed" if state else "released"

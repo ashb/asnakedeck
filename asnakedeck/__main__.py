@@ -2,14 +2,15 @@ import asyncio
 import logging
 import signal
 
-from StreamDeck.DeviceManager import DeviceManager
-
-from asnakedeck.deck import Deck
-
 logging.basicConfig(level=logging.DEBUG)
 
 
 async def main():
+    from StreamDeck.DeviceManager import DeviceManager
+
+    from .config import PluginManager
+    from .deck import Deck
+
     loop = asyncio.get_event_loop()
     # register signal handlers to cancel listener when program is asked to terminate
     for sig in (signal.SIGTERM, signal.SIGHUP, signal.SIGINT):
@@ -21,8 +22,10 @@ async def main():
 
     decks = []
 
+    pm = PluginManager()
+
     for device in dm.enumerate():
-        deck = Deck(device)
+        deck = Deck(device, plugin_manager=pm)
         decks.append(deck)
 
     async def signal_handler(signame, loop):

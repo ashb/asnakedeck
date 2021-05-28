@@ -1,6 +1,10 @@
 name: Test
 
-on: [push, pull_request]
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
 
 jobs:
   build:
@@ -10,54 +14,44 @@ jobs:
       matrix:
         python-version: [3.9]
         os: [ubuntu-latest]
-
+    env:
+      PYTHON: ${{ matrix.python-version }}
     steps:
-      - uses: actions/checkout@v2
-      - name: Ubuntu cache
-        uses: actions/cache@v1
-        if: startsWith(matrix.os, 'ubuntu')
-        with:
-          path: ~/.cache/pip
-          key:
-            ${{ matrix.os }}-${{ matrix.python-version }}-${{ hashFiles('**/pyproject.toml') }}
-          restore-keys: |
-            ${{ matrix.os }}-${{ matrix.python-version }}-
-
-      - name: macOS cache
-        uses: actions/cache@v1
-        if: startsWith(matrix.os, 'macOS')
-        with:
-          path: ~/Library/Caches/pip
-          key:
-            ${{ matrix.os }}-${{ matrix.python-version }}-${{ hashFiles('**/pyproject.toml') }}
-          restore-keys: |
-            ${{ matrix.os }}-${{ matrix.python-version }}-
-
-      - name: Windows cache
-        uses: actions/cache@v1
-        if: startsWith(matrix.os, 'windows')
-        with:
-          path: c:\users\runneradmin\appdata\local\pip\cache
-          key:
-            ${{ matrix.os }}-${{ matrix.python-version }}-${{ hashFiles('**/pyproject.toml') }}
-          restore-keys: |
-            ${{ matrix.os }}-${{ matrix.python-version }}-
-
-      - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v1
-        with:
-          python-version: ${{ matrix.python-version }}
-
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          python -m pip install --upgrade poetry
-          poetry install
-      - name: Test
-        shell: bash
-        run: |
-          poetry run pytest tests/ -s --cov=asnakedeck/ --cov-report=term-missing ${@-}
-          poetry run coverage xml
-      - name: Report Coverage
-        if: matrix.os == 'ubuntu-latest' && matrix.python-version == '3.9'
-        uses: codecov/codecov-action@v1.5.0
+    - uses: actions/checkout@v2
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Cache deps
+      uses: actions/cache@v2
+      with:
+        path: |
+          ~/.cache/pypoetry/
+          ~/.cache/pip/
+        key: python${{ matrix.python-version }}-${{ hashFiles('poetry.lock') }}
+        restore-keys: python${{ matrix.python-version }}-
+    - name: Cache pre-commit deps
+      uses: actions/cache@v2
+      with:
+        path: |
+          ~/.cache/pre-commit/
+        key: precommit-${{ hashFiles('.pre-commit-config.yaml') }}
+        restore-keys: precommit-
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        python -m pip install --upgrade poetry pre-commit
+        poetry install
+    - name: Lint
+      run: |
+        pre-commit run --all-files -v --show-diff-on-failure
+        poetry run pytest --dead-fixtures --dup-fixtures
+        pre-commit gc
+    - name: Test with pytest
+      run: |
+        make test
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v1.5.0
+      with:
+        flags: unittests
+        env_vars: PYTHON

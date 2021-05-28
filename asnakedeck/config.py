@@ -38,7 +38,4 @@ class PluginManager(pluggy.PluginManager):
         # "displayers" here. Better might be to only load the specific name
         # when asked, but pluggy doesn't give us that level of freedom.
         self.load_setuptools_entrypoints("asnakedeck", "displayers")
-        return {
-            key_displayer.__name__: key_displayer
-            for key_displayer in chain(*self.hook.register_key_displayers())
-        }
+        return {key_displayer.__name__: key_displayer for key_displayer in chain(*self.hook.register_key_displayers())}

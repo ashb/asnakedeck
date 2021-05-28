@@ -14,7 +14,7 @@ _________________
 [Read Latest Documentation](https://ashb.github.io/asnakedeck/) - [Browse GitHub Code Repository](https://github.com/ashb/asnakedeck/)
 _________________
 
-**asnakedeck** AsnycIO StreamDeck controller for Linux
+**asnakedeck** AsyncIO StreamDeck controller for Linux
 
 This started out as a clone/hack on [jpetazzo/snakedeck](https://github.com/jpetazzo/snakedeck) but has evolved.
 

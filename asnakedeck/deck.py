@@ -132,9 +132,7 @@ class Deck:
 
     def load_config(self):
         if not os.path.isfile(self.config_file_path):
-            log.warning(
-                f"Deck {self.serial_number} has no configuration file ({self.config_file_path})."
-            )
+            log.warning(f"Deck {self.serial_number} has no configuration file ({self.config_file_path}).")
             return
         config = yaml.safe_load(open(self.config_file_path))
 
@@ -143,9 +141,7 @@ class Deck:
             config = {"keys": self.config}
 
         if not config:
-            log.warning(
-                f"Deck {self.serial_number} has no configuration in {self.config_file_path!r}."
-            )
+            log.warning(f"Deck {self.serial_number} has no configuration in {self.config_file_path!r}.")
             return
 
         self.config = config
@@ -180,7 +176,7 @@ class Deck:
         if "cycle" in key:
             key.update(key["cycle"][0])
         text = None
-        kwargs = dict()
+        kwargs = {}
         font: ImageFont.FreeTypeFont = None
 
         if "label" in key:

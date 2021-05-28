@@ -8,6 +8,7 @@ from asnakedeck.types import KeyDisplayHandler
 if TYPE_CHECKING:
     from asnakedeck.deck import Deck
 
+
 @hookimpl
 def register_key_displayers() -> list[KeyDisplayHandler]:
     return [foo]

@@ -1,17 +1,23 @@
 {
-  "template": "https://github.com/timothycrosley/cookiecutter-python",
-  "commit": "4f2a3601ad12239bf6cbeedba8ecf297690ab07f",
-  "checkout": null,
-  "context": {
-    "cookiecutter": {
-      "full_name": "Ash Berlin-Taylor",
-      "email": "ash_github@firemirror.com",
-      "github_username": "ashb",
-      "project_name": "asnakedeck",
-      "description": "AsnycIO StreamDeck controller for Linux",
-      "version": "0.0.1",
-      "_template": "https://github.com/timothycrosley/cookiecutter-python"
-    }
-  },
-  "directory": null
+    "template": "https://github.com/ashb/cookiecutter-python",
+    "commit": "db1616853cc519c145073690c31f04b40f1f0409",
+    "checkout": null,
+    "context": {
+        "cookiecutter": {
+            "full_name": "Ash Berlin-Taylor",
+            "email": "ash_github@firemirror.com",
+            "github_username": "ashb",
+            "project_name": "asnakedeck",
+            "module_name": "asnakedeck",
+            "description": "AsyncIO StreamDeck controller for Linux",
+            "version": "0.0.1",
+            "docs_tool": "sphinx",
+            "license": "MIT",
+            "min_python_version": "3.9",
+            "install_deps_now": "False",
+            "_extensions": ["jinja2_time.TimeExtension"],
+            "_template": "https://github.com/ashb/cookiecutter-python"
+        }
+    },
+    "directory": null
 }

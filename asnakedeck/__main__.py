@@ -14,9 +14,7 @@ async def main():
     loop = asyncio.get_event_loop()
     # register signal handlers to cancel listener when program is asked to terminate
     for sig in (signal.SIGTERM, signal.SIGHUP, signal.SIGINT):
-        loop.add_signal_handler(
-            sig, lambda: asyncio.create_task(signal_handler(sig.name, asyncio.get_running_loop()))
-        )
+        loop.add_signal_handler(sig, lambda: asyncio.create_task(signal_handler(sig.name, asyncio.get_running_loop())))
 
     dm = DeviceManager()
 

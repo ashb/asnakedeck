@@ -1,6 +1,6 @@
 {
     "template": "https://github.com/ashb/cookiecutter-python",
-    "commit": "db1616853cc519c145073690c31f04b40f1f0409",
+    "commit": "0b8a85a561c31c2586c9a6f920e1bafe51ce7080",
     "checkout": null,
     "context": {
         "cookiecutter": {
@@ -15,7 +15,9 @@
             "license": "MIT",
             "min_python_version": "3.9",
             "install_deps_now": "False",
-            "_extensions": ["jinja2_time.TimeExtension"],
+            "_extensions": [
+                "jinja2_time.TimeExtension"
+            ],
             "_template": "https://github.com/ashb/cookiecutter-python"
         }
     },

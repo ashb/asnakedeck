@@ -581,6 +581,25 @@ optional = false
 python-versions = "*"
 
 [[package]]
+name = "pulsectl"
+version = "21.10.5"
+description = "Python high-level interface and ctypes-based bindings for PulseAudio (libpulse)"
+category = "main"
+optional = true
+python-versions = "*"
+
+[[package]]
+name = "pulsectl-asyncio"
+version = "0.2.0"
+description = "Asyncio frontend for the pulsectl Python bindings of libpulse"
+category = "main"
+optional = true
+python-versions = "~=3.6"
+
+[package.dependencies]
+pulsectl = ">=21.10.2,<=21.10.5"
+
+[[package]]
 name = "py"
 version = "1.11.0"
 description = "library with cross-python path, ini-parsing, io, code, log facilities"
@@ -888,10 +907,13 @@ python-versions = ">=3.6"
 docs = ["sphinx", "jaraco.packaging (>=8.2)", "rst.linker (>=1.9)"]
 testing = ["pytest (>=4.6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytest-cov", "pytest-enabler (>=1.0.1)", "jaraco.itertools", "func-timeout", "pytest-black (>=0.3.7)", "pytest-mypy"]
 
+[extras]
+pulseaudio = ["pulsectl-asyncio"]
+
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.10"
-content-hash = "faf460f7dba357f7e6aff931d7ecbbea2aec2e2b06165555fae89032a70e89e5"
+content-hash = "de44a904cee20db4523793e060fb8929006c044aa76169a06e2afdb690c53c35"
 
 [metadata.files]
 appnope = [
@@ -1228,6 +1250,14 @@ prompt-toolkit = [
 ptyprocess = [
     {file = "ptyprocess-0.7.0-py2.py3-none-any.whl", hash = "sha256:4b41f3967fce3af57cc7e94b888626c18bf37a083e3651ca8feeb66d492fef35"},
     {file = "ptyprocess-0.7.0.tar.gz", hash = "sha256:5c5d0a3b48ceee0b48485e0c26037c0acd7d29765ca3fbb5cb3831d347423220"},
+]
+pulsectl = [
+    {file = "pulsectl-21.10.5-py2.py3-none-any.whl", hash = "sha256:5042b9b69733ae691ed2ed7194f775e95a4ae7063542e4fd06ec8954f0fa61b7"},
+    {file = "pulsectl-21.10.5.tar.gz", hash = "sha256:b347983fb78baab168f4dc4804ab2c59ca5b813bf62f8146dfb5fcb6ab6c8ba2"},
+]
+pulsectl-asyncio = [
+    {file = "pulsectl-asyncio-0.2.0.tar.gz", hash = "sha256:a813081ff1ce9edf525eb9eb1ad6531b87ce6f47dfb51ee605a53b2b899c62fa"},
+    {file = "pulsectl_asyncio-0.2.0-py3-none-any.whl", hash = "sha256:fd6640ce468fb9d54f916e613059ec9ffc78bfb629d19d69532ac86e1a38a916"},
 ]
 py = [
     {file = "py-1.11.0-py2.py3-none-any.whl", hash = "sha256:607c53218732647dff4acdfcd50cb62615cedf612e72d1724fb1a0cc6405b378"},

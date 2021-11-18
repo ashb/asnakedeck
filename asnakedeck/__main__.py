@@ -8,8 +8,8 @@ logging.basicConfig(level=logging.DEBUG)
 async def main():
     from StreamDeck.DeviceManager import DeviceManager
 
-    from .config import PluginManager
     from .deck import Deck
+    from .plugin_manager import PluginManager
 
     loop = asyncio.get_event_loop()
     # register signal handlers to cancel listener when program is asked to terminate
@@ -26,16 +26,21 @@ async def main():
         deck = Deck(device, plugin_manager=pm)
         decks.append(deck)
 
+    running = True
+
     async def signal_handler(signame, loop):
+        nonlocal running
+        running = False
         for task in asyncio.all_tasks(loop=loop):
             # cancel all tasks other than this signal_handler
             if task is not asyncio.current_task():
-                task.cancel()
+                task.cancel(msg=f"Signal {signame} received")
 
-    try:
-        await asyncio.gather(*[deck.task for deck in decks])
-    except asyncio.CancelledError:
-        pass
+    while running:
+        try:
+            await asyncio.gather(*[task for deck in decks for task in deck.tasks])
+        except asyncio.CancelledError:
+            pass
 
 
 # Run event loop until main_task finishes

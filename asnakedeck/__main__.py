@@ -1,9 +1,12 @@
 import asyncio
 import logging
+from pathlib import Path
 import signal
+import sys
 
 logging.basicConfig(level=logging.DEBUG)
 
+WINDOWS = sys.platform == "win32"
 
 async def main():
     from StreamDeck.DeviceManager import DeviceManager
@@ -12,9 +15,15 @@ async def main():
     from .plugin_manager import PluginManager
 
     loop = asyncio.get_event_loop()
-    # register signal handlers to cancel listener when program is asked to terminate
-    for sig in (signal.SIGTERM, signal.SIGHUP, signal.SIGINT):
-        loop.add_signal_handler(sig, lambda: asyncio.create_task(signal_handler(sig.name, asyncio.get_running_loop())))
+    if not WINDOWS:
+        # TODO: Get this working again!
+        # register signal handlers to cancel listener when program is asked to terminate
+        for sig in (signal.SIGTERM, signal.SIGHUP, signal.SIGINT):
+            loop.add_signal_handler(sig, lambda: asyncio.create_task(signal_handler(sig.name, asyncio.get_running_loop())))
+
+    if WINDOWS:
+        # Pre-load hidapi.dll so we can "find" it
+        preload_dll()
 
     dm = DeviceManager()
 
@@ -43,5 +52,13 @@ async def main():
             pass
 
 
+def preload_dll():
+    import ctypes
+
+    path = Path(__file__).parents[1] / 'hidapi.dll'
+    ctypes.cdll.LoadLibrary(str(path))
+
+
 # Run event loop until main_task finishes
-asyncio.run(main())
+if __name__ == "__main__":
+    asyncio.run(main())

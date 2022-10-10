@@ -10,13 +10,12 @@ from typing import TYPE_CHECKING
 
 import attr
 import yaml
-from asyncinotify import Inotify, InotifyError, Mask
 from PIL import ImageFont
 from StreamDeck.Transport.Transport import TransportError
 
 from asnakedeck.types import Key
 
-from .config import CONFIG_DIR
+from .platform import WINDOWS
 
 if TYPE_CHECKING:
     from StreamDeck.Devices.StreamDeck import StreamDeck
@@ -50,7 +49,18 @@ class Deck:
             )
 
         self.load_config()
-        self.task = asyncio.create_task(self.watch_config_for_changes())
+
+        if not WINDOWS:
+            from .platform.linux import watch_file_for_changes
+            async def file_change(_):
+                self.load_config()
+            self.task = asyncio.create_task(watch_file_for_changes(self.config_file_path, file_change))
+        else:
+            # Need to create a dummy self.task
+            async def loop_forever(value=None):
+                while True:
+                    await asyncio.sleep(3600)
+            self.task = asyncio.create_task(loop_forever())
         self.task.add_done_callback(self.on_task_complete)
 
     @property
@@ -74,7 +84,9 @@ class Deck:
 
     @cached_property
     def config_file_path(self) -> Path:
-        return Path(CONFIG_DIR) / (self.serial_number + ".yaml")
+        from .platform import CONFIG_DIR
+
+        return CONFIG_DIR / (self.serial_number + ".yaml")
 
     @cached_property
     def serial_number(self) -> str:
@@ -87,33 +99,6 @@ class Deck:
             self.hardware.set_key_image(key, self.hardware.BLANK_KEY_IMAGE)
         self.hardware.set_brightness(80)
         self.keys.clear()
-
-    async def watch_config_for_changes(self):
-        def _add_file_watch():
-            try:
-                inotify.add_watch(self.config_file_path, Mask.MODIFY)
-            except InotifyError:
-                pass
-
-        try:
-            inotify = Inotify()
-
-            _add_file_watch()
-            inotify.add_watch(CONFIG_DIR, Mask.MOVE | Mask.CREATE)
-
-            async for event in inotify:
-                if event.mask & (Mask.CREATE | Mask.MOVED_TO):
-                    # File created/renamed in config directory
-                    full_path = event.watch.path / event.name
-                    if self.config_file_path == full_path:
-                        self.load_config()
-                        _add_file_watch()
-
-                elif event.mask & Mask.MODIFY:
-                    # File was modified
-                    self.load_config()
-        except asyncio.CancelledError:
-            pass
 
     def close(self, reset=True):
         for task in self.key_tasks.values():
@@ -137,7 +122,8 @@ class Deck:
 
     @cached_property
     def label_font(self) -> ImageFont.FreeTypeFont:
-        font = self.config.get("label_font", {"face": "DroidSans", "size": 20})
+        default = "calibri.ttf" if WINDOWS else "DroidSans"
+        font = self.config.get("label_font", {"face": default, "size": 20})
         return self._get_font(font["face"], font["size"])
 
     @cached_property
@@ -146,10 +132,11 @@ class Deck:
         return self._get_font(font["face"], font["size"])
 
     def load_config(self):
-        if not os.path.isfile(self.config_file_path):
+        if not self.config_file_path.is_file():
             log.warning(f"Deck {self.serial_number} has no configuration file ({self.config_file_path}).")
             return
-        config = yaml.safe_load(open(self.config_file_path))
+        with self.config_file_path.open() as fh:
+            config = yaml.safe_load(fh)
 
         # Support snakedeck format where config is just a list
         if isinstance(config, list):
@@ -180,7 +167,9 @@ class Deck:
                         task = asyncio.get_event_loop().create_task(plugin.loop())
                         key.tasks.append(task)
                     else:
-                        logging.warn(f"Unknown display handler {name!r} for key {key_config['line']}-{key_config['column']}")
+                        log.warn(f"Unknown display handler {name!r} for key {key_config['line']}-{key_config['column']}")
+                        if log.isEnabledFor(logging.DEBUG):
+                            log.debug(f"Valid display handlers: %r", list(self.plugin_manager.key_handlers.keys()))
 
                 if old_key := self.keys.get(key_number, None):
                     for task in old_key.tasks:

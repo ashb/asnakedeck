@@ -13,19 +13,6 @@ import attr
 if TYPE_CHECKING:
     from .types import KeyHandler
 
-# Set a couple of directory paths for later use.
-# This follows the spec at the following address:
-# https://specifications.freedesktop.org/basedir-spec/basedir-spec-latest.html
-XDG_CONFIG_HOME = os.environ.get("XDG_CONFIG_HOME")
-if not XDG_CONFIG_HOME:
-    XDG_CONFIG_HOME = os.path.join(os.environ["HOME"], ".config")
-CONFIG_DIR = os.path.join(XDG_CONFIG_HOME, "snakedeck")
-
-XDG_STATE_HOME = os.environ.get("XDG_STATE_HOME")
-if not XDG_STATE_HOME:
-    XDG_STATE_HOME = os.path.join(os.environ["HOME"], ".local", "state")
-STATE_DIR = os.path.join(XDG_STATE_HOME, "snakedeck")
-
 T = TypeVar("T", Callable, FunctionType)
 
 
@@ -86,10 +73,10 @@ class PluginManager:
             raise KeyError(f"{self} has no plugin {name!r}")
 
         def __iter__(self):
-            yield from self._store
+            yield from self.store
 
         def __len__(self):
-            return len(self._store)
+            return len(self.store)
 
         def __repr__(self) -> str:
             return f"<{type(self).__name__} entrypoint_name={self.entrypoint_name!r}>"

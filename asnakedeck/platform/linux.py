@@ -13,7 +13,7 @@ XDG_CONFIG_HOME = Path(os.environ.get("XDG_CONFIG_HOME") or os.path.join(os.envi
 XDG_STATE_HOME = Path(os.environ.get("XDG_STATE_HOME") or os.path.join(os.environ["HOME"], ".local", "state"))
 
 
-async def watch_file_for_changes(path: Path, cb: Callable[[os.PathLike], Coroutine[]]):
+async def watch_file_for_changes(path: Path, cb: Callable[[os.PathLike], Coroutine]):
     """
     Watch a file for changes, and call the async callback when detected.
 

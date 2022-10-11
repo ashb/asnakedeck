@@ -38,7 +38,7 @@ class Key:
     config: dict
     deck: "Deck" = attr.ib(repr=False)
     handlers: list[KeyHandler] = attr.ib(repr=False, factory=list)
-    tasks: list[asyncio.Task] = attr.ib(repr=False, factory=list)
+    tasks: set[asyncio.Task] = attr.ib(repr=False, factory=set)
 
     def update(self, **key):
         text = None
@@ -64,6 +64,10 @@ class Key:
                 self.deck.hardware.set_key_image(self.number, deck_image)
             except TransportError:
                 pass
+
+    def add_task(self, task: asyncio.Task):
+        task.add_done_callback(self.tasks.remove)
+        self.tasks.add(task)
 
     def on_keydown(self):
         return asyncio.gather(*[handler.on_keydown() for handler in self.handlers])

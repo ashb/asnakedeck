@@ -14,12 +14,10 @@ async def main():
     from .deck import Deck
     from .plugin_manager import PluginManager
 
+    task = asyncio.current_task()
+    task.set_name("main")
+
     loop = asyncio.get_event_loop()
-    if not WINDOWS:
-        # TODO: Get this working again!
-        # register signal handlers to cancel listener when program is asked to terminate
-        for sig in (signal.SIGTERM, signal.SIGHUP, signal.SIGINT):
-            loop.add_signal_handler(sig, lambda: asyncio.create_task(signal_handler(sig.name, asyncio.get_running_loop())))
 
     if WINDOWS:
         # Pre-load hidapi.dll so we can "find" it
@@ -35,21 +33,14 @@ async def main():
         deck = Deck(device, plugin_manager=pm)
         decks.append(deck)
 
-    running = True
-
-    async def signal_handler(signame, loop):
-        nonlocal running
-        running = False
-        for task in asyncio.all_tasks(loop=loop):
-            # cancel all tasks other than this signal_handler
-            if task is not asyncio.current_task():
-                task.cancel(msg=f"Signal {signame} received")
-
-    while running:
+    while True:
         try:
-            await asyncio.gather(*[task for deck in decks for task in deck.tasks])
-        except asyncio.CancelledError:
-            pass
+            tasks = [task for deck in decks for task in deck.tasks]
+            if not tasks:
+                break
+            await asyncio.gather(*tasks)
+        except KeyboardInterrupt:
+            break
 
 
 def preload_dll():
@@ -61,4 +52,7 @@ def preload_dll():
 
 # Run event loop until main_task finishes
 if __name__ == "__main__":
-    asyncio.run(main())
+    try:
+        asyncio.run(main())
+    except KeyboardInterrupt:
+        pass

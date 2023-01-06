@@ -18,7 +18,7 @@ from StreamDeck.Transport.Transport import TransportError
 
 from asnakedeck.types import Key
 
-from .platform import CONFIG_DIR, WINDOWS
+from . import platform
 
 if TYPE_CHECKING:
     from StreamDeck.Devices.StreamDeck import StreamDeck
@@ -37,7 +37,7 @@ class Deck:
     image_size: tuple[int, int] = attr.ib(init=False)
 
     def __attrs_post_init__(self):
-        CONFIG_DIR.mkdir(parents=True, exist_ok=True)
+        platform.CONFIG_DIR.mkdir(parents=True, exist_ok=True)
         self.hardware.open()
         self.hardware.read_thread.setName(f"DeckThread-{self.serial_number}")
         self.hardware.set_key_callback_async(self.on_keypress)
@@ -53,23 +53,28 @@ class Deck:
 
         self.load_config()
 
-        if not WINDOWS:
+        if not platform.WINDOWS:
             from .platform.linux import watch_file_for_changes
             async def file_change(_):
                 self.load_config()
-            self.task = asyncio.create_task(watch_file_for_changes(self.config_file_path, file_change), name="config-watcher")
-            self.task.add_done_callback(self.on_task_complete)
+            self.config_watcher_task = asyncio.create_task(watch_file_for_changes(self.config_file_path, file_change), name="config-watcher")
+            self.config_watcher_task.add_done_callback(self.on_task_complete)
+        else:
+            self.config_watcher_task = None
+
+    def __hash__(self):
+        return hash(self.serial_number)
 
     @property
     def tasks(self) -> Iterable[Task]:
-        if self.task and not self.task.done():
-            yield self.task
+        if self.config_watcher_task and not self.config_watcher_task.done():
+            yield self.config_watcher_task
         yield from self.key_tasks
 
     def on_task_complete(self, task):
         log.info("Closing down")
         self.close()
-        self.task = None
+        self.config_watcher_task = None
 
     def __del__(self):
         if self.hardware.connected():
@@ -81,9 +86,7 @@ class Deck:
 
     @cached_property
     def config_file_path(self) -> Path:
-        from .platform import CONFIG_DIR
-
-        return CONFIG_DIR / (self.serial_number + ".yaml")
+        return platform.CONFIG_DIR / (self.serial_number + ".yaml")
 
     @cached_property
     def serial_number(self) -> str:
@@ -120,26 +123,26 @@ class Deck:
                     pass
             self.hardware.close()
 
+    @functools.lru_cache
     def _get_font(self, face: str, size: int):
-        return ImageFont.truetype(face, size)
+        return ImageFont.truetype(platform.resolve_font(face), size)
 
     @cached_property
     def label_font(self) -> ImageFont.FreeTypeFont:
-        default = "calibri.ttf" if WINDOWS else "DroidSans"
-        font = self.config.get("label_font", {"face": default, "size": 20})
+        font = self.config.get("label_font", {"face": platform.DEFAULT_FONT, "size": 20})
         return self._get_font(font["face"], font["size"])
 
     @cached_property
     def emoji_font(self) -> ImageFont.FreeTypeFont:
-        font = self.config.get("emoji_font", {"face": "NotoColorEmoji", "size": 109})
+        font = self.config.get("emoji_font", {"face": platform.EMOJI_FONT, "size": 109})
         return self._get_font(font["face"], font["size"])
 
     def load_config(self):
         if not self.config_file_path.is_file():
             log.warning(f"Deck {self.serial_number} has no configuration file ({self.config_file_path}).")
             return
-        with self.config_file_path.open() as fh:
-            config = yaml.safe_load(fh)
+        log.debug(f"Deck {self.serial_number} loaded config from {self.config_file_path}.")
+        config = yaml.safe_load(self.config_file_path.read_text())
 
         # Support snakedeck format where config is just a list
         if isinstance(config, list):

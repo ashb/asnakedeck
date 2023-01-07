@@ -2,6 +2,8 @@
 
 AsyncIO StreamDeck controller for Linux
 """
+from __future__ import annotations
+
 import pluggy
 
 

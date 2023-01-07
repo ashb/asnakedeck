@@ -2,14 +2,17 @@ from __future__ import annotations
 
 import asyncio
 import os
+import logging
+from collections.abc import Coroutine
 from pathlib import Path
-from typing import  Callable, Coroutine
+from typing import Callable
 
 import attr
 import pulsectl
 import pulsectl_asyncio
 from pulsectl import PulseDisconnected, PulseError, PulseEventFacilityEnum, PulseEventTypeEnum
 
+log = logging.getLogger(__name__)
 
 # Set a couple of directory paths for later use.
 # This follows the spec at the following address:
@@ -21,8 +24,10 @@ XDG_STATE_HOME = Path(os.environ.get("XDG_STATE_HOME") or os.path.join(os.enviro
 EMOJI_FONT = "NotoColorEmoji"
 DEFAULT_FONT = "DroidSans"
 
+
 def resolve_font(name: str) -> str:
     return name
+
 
 async def watch_file_for_changes(path: Path, cb: Callable[[os.PathLike], Coroutine]):
     """
@@ -81,7 +86,7 @@ class PulseVolumeWatcher:
         while not self.pulse.connected:
             try:
                 await self.pulse.connect()
-                logging.info("Reconnected to pulseaudio %s", self.pulse.connected)
+                log.info("Reconnected to pulseaudio %s", self.pulse.connected)
             except (PulseCallError, PulseError):
                 await asyncio.sleep(1)
 

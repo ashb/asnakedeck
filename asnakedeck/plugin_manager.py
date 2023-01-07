@@ -2,11 +2,11 @@ from __future__ import annotations
 
 import importlib.metadata
 import logging
-import os
 from collections import defaultdict
+from collections.abc import Mapping
 from functools import cached_property
 from types import FunctionType
-from typing import TYPE_CHECKING, Callable, Generic, Mapping, TypeVar
+from typing import TYPE_CHECKING, Callable, Generic, TypeVar
 
 import attr
 

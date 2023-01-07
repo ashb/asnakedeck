@@ -7,9 +7,10 @@ import logging
 import operator
 import os
 from asyncio.tasks import Task
+from collections.abc import Iterable
 from functools import cached_property
 from pathlib import Path
-from typing import TYPE_CHECKING, Iterable
+from typing import TYPE_CHECKING
 
 import attr
 import yaml
@@ -55,8 +56,10 @@ class Deck:
 
         if not platform.WINDOWS:
             from .platform.linux import watch_file_for_changes
+
             async def file_change(_):
                 self.load_config()
+
             self.config_watcher_task = asyncio.create_task(watch_file_for_changes(self.config_file_path, file_change), name="config-watcher")
             self.config_watcher_task.add_done_callback(self.on_task_complete)
         else:
@@ -64,7 +67,7 @@ class Deck:
 
     def open(self):
         self.hardware.open()
-        assert(self.hardware.read_thread)
+        assert self.hardware.read_thread
         self.hardware.read_thread.setName(f"DeckThread-{self.serial_number}")
 
     def __hash__(self):
@@ -179,7 +182,7 @@ class Deck:
                     else:
                         log.warn(f"Unknown display handler {name!r} for key {key_config['line']}-{key_config['column']}")
                         if log.isEnabledFor(logging.DEBUG):
-                            log.debug(f"Valid display handlers: %r", list(self.plugin_manager.key_handlers.keys()))
+                            log.debug("Valid display handlers: %r", list(self.plugin_manager.key_handlers.keys()))
 
                 if old_key := self.keys.get(key_number, None):
                     for task in old_key.tasks:

@@ -1,5 +1,0 @@
-# -*- cfg -*-
-[flake8]
-max-line-length = 160
-extend-ignore =
-    E203  # https://github.com/psf/black/blob/master/docs/the_black_code_style.md#slices

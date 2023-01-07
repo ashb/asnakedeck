@@ -5,16 +5,16 @@ import io
 import logging
 import sys
 import threading
-from typing import TYPE_CHECKING, Type
 import weakref
+from typing import TYPE_CHECKING
 
 from kivy.app import App
+from kivy.config import Config
 from kivy.core.image import Image as CoreImage
+from kivy.graphics import Color, Line, RoundedRectangle
 from kivy.uix.behaviors import ButtonBehavior
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.image import Image
-from kivy.graphics import Line, Color, RoundedRectangle
-from kivy.config import Config
 from StreamDeck.Devices.StreamDeck import StreamDeck
 from StreamDeck.Transport.Dummy import Dummy
 
@@ -114,11 +114,10 @@ class AsyncApp(App):
         asyncio.create_task(self.deck.on_keypress(self.simulation(), idx, state))
 
     def on_start(self):
-        from ..deck import Deck
-        from ..plugin_manager import PluginManager
-
         from kivy.core.window import Window
 
+        from ..deck import Deck
+        from ..plugin_manager import PluginManager
 
         self.root.do_layout()
         if list(Window.size) != list(self.root.minimum_size):
@@ -171,7 +170,6 @@ class SimulatedDeck(StreamDeck):
         pass
 
     def _setup_reader(self, callback):
-
         if callback is None:
             return
 
@@ -183,11 +181,11 @@ class SimulatedDeck(StreamDeck):
         # BUT DON'T RUN IT - We call the callback directly from the AsyncApp instead
 
     @classmethod
-    def make_simulation(cls, serial_number: str, kind: Type[StreamDeck]):
+    def make_simulation(cls, serial_number: str, kind: type[StreamDeck]):
         # Make a quess at the size before we create the window
         # 10 px between keys, and 10 px either side
-        Config.set('graphics', 'width', 10 + (kind.KEY_COLS * kind.KEY_PIXEL_WIDTH) + (kind.KEY_COLS-1) * 10 + 10)
-        Config.set('graphics', 'height', 10 + (kind.KEY_ROWS * kind.KEY_PIXEL_HEIGHT) + (kind.KEY_ROWS-1) * 10 + 10)
+        Config.set('graphics', 'width', 10 + (kind.KEY_COLS * kind.KEY_PIXEL_WIDTH) + (kind.KEY_COLS - 1) * 10 + 10)
+        Config.set('graphics', 'height', 10 + (kind.KEY_ROWS * kind.KEY_PIXEL_HEIGHT) + (kind.KEY_ROWS - 1) * 10 + 10)
         app = AsyncApp(kind.KEY_ROWS, kind.KEY_COLS)
         sim = SimulatedDeck(app, serial_number)
 
@@ -202,7 +200,7 @@ class SimulatedDeck(StreamDeck):
         return sim
 
 
-async def main(serial: str, kind: Type[StreamDeck]):
+async def main(serial: str, kind: type[StreamDeck]):
 
     hardware = SimulatedDeck.make_simulation(serial, kind)
     app = hardware.app
@@ -215,4 +213,5 @@ async def main(serial: str, kind: Type[StreamDeck]):
 
 if __name__ == "__main__":
     from StreamDeck.Devices.StreamDeckOriginalV2 import StreamDeckOriginalV2
+
     asyncio.run(main(sys.argv[1], StreamDeckOriginalV2))

@@ -13,7 +13,7 @@ repos:
       - id: identity
       - id: check-hooks-apply
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v3.4.0
+    rev: v4.4.0
     hooks:
       - id: check-merge-conflict
       - id: debug-statements
@@ -26,13 +26,8 @@ repos:
       - id: fix-encoding-pragma
         args:
           - --remove
-  - repo: https://github.com/asottile/pyupgrade
-    rev: v2.18.1
-    hooks:
-      - id: pyupgrade
-        args: ["--py39-plus"]
   - repo: https://github.com/ikamensh/flynt/
-    rev: '0.63'
+    rev: '0.77'
     hooks:
     - id: flynt
   - repo: local
@@ -49,25 +44,24 @@ repos:
         entry: poetry run black
         types: [python]
         exclude: ^docs/conf\.py$
-      - id: flake8
-        name: flake8
+      - id: ruff
+        name: ruff
         language: system
-        entry: poetry run flake8
+        require_serial: true
+        entry: |-
+          python -c '
+          import os, subprocess, sys;
+          args = ["poetry", "run", "ruff", "--fix", "--no-update-check"]
+          if "GITHUB_ACTIONS" in os.environ:
+            args += ["--format=github"]
+          args += sys.argv[1:]
+          exit(subprocess.run(args).returncode)
+          '
         types: [python]
         exclude: ^docs/conf\.py$
-      - id: isort
-        name: isort
-        language: system
-        entry: poetry run isort
-        types: [python]
       - id: safety
         name: safety
         language: system
         entry: poetry run safety check -i 39462 -i 40291
         pass_filenames: false
-        types: [python]
-      - id: bandit
-        name: bandit
-        language: system
-        entry: poetry run bandit
         types: [python]

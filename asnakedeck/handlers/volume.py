@@ -2,14 +2,15 @@ from __future__ import annotations
 
 import asyncio
 import logging
-from typing import Any, Coroutine
+from typing import Any
 
 import attr
 
-from ..types import KeyHandler
 from .. import platform
+from ..types import KeyHandler
 
 log = logging.getLogger(__name__)
+
 
 @attr.define
 class Volume(KeyHandler):
@@ -52,5 +53,3 @@ class Volume(KeyHandler):
 
     async def on_keyup(self):
         await self.impl.toggle_mute()
-
-

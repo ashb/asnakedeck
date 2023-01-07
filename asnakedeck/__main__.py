@@ -4,8 +4,6 @@ import asyncio
 import importlib
 import logging
 import os
-import signal
-import sys
 from functools import cache
 from pathlib import Path
 
@@ -17,17 +15,16 @@ logging.basicConfig(level=logging.DEBUG)
 
 cli = typer.Typer()
 
-async def real_hardware():
+
+async def real_hardware() -> None:
     from StreamDeck.DeviceManager import DeviceManager
 
     from .deck import Deck
     from .plugin_manager import PluginManager
 
     task = asyncio.current_task()
-    assert(task)
+    assert task
     task.set_name("main")
-
-    loop = asyncio.get_event_loop()
 
     if platform.WINDOWS:
         # Pre-load hidapi.dll so we can "find" it
@@ -60,12 +57,10 @@ def preload_dll():
     path = Path(__file__).parents[1] / 'hidapi.dll'
     ctypes.cdll.LoadLibrary(str(path))
 
+
 @cache
 def all_serial_numbers():
-    return [
-        item.stem
-        for item in platform.CONFIG_DIR.glob("*.yaml")
-    ]
+    return [item.stem for item in platform.CONFIG_DIR.glob("*.yaml")]
 
 
 @cache
@@ -73,7 +68,7 @@ def all_deck_types():
     import importlib
     import pkgutil
 
-    mod = importlib.import_module(f'StreamDeck.Devices')
+    mod = importlib.import_module('StreamDeck.Devices')
 
     return [
         submod.name
@@ -95,11 +90,13 @@ def validate_kind(kind: str):
     except ImportError:
         raise typer.BadParameter(f'Deck type {kind!r} is not known to StreamDeck library. See `deck-types` command')
 
+
 @cli.command()
-def fake(serial: str, kind = typer.Option(..., callback=validate_kind)):
+def fake(serial: str, kind=typer.Option(..., callback=validate_kind)):
     os.environ.setdefault('KIVY_LOG_MODE', 'MIXED')
 
     from .simulation.app import main
+
     asyncio.run(main(serial, kind))
 
 
@@ -110,11 +107,13 @@ def run():
     except KeyboardInterrupt:
         pass
 
+
 @cli.command()
 def serial_numbers():
     """List the serial numbers for which config files exist"""
     for serial in all_serial_numbers():
         print(serial)
+
 
 @cli.command()
 def deck_types():
@@ -127,6 +126,7 @@ def deck_types():
 def default(ctx: typer.Context):
     if ctx.invoked_subcommand is None:
         return ctx.invoke(run)
+
 
 # Run event loop until main_task finishes
 if __name__ == "__main__":

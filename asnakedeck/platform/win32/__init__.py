@@ -1,20 +1,21 @@
 from __future__ import annotations
+
 import asyncio
 import logging
-
 import sys
+from collections.abc import Coroutine
 from pathlib import Path
-from typing import TYPE_CHECKING, Callable, Coroutine
+from typing import Callable
 
 import attr
-from windows_fonts import FontCollection, Weight, Style
-from windows_audio_control import AudioDevice, DeviceCollection, DeviceCollectionEventType, VolumeChangeEvent, DeviceCollectionEvent, Role
-
+from windows_audio_control import AudioDevice, DeviceCollection, DeviceCollectionEventType, Role
+from windows_fonts import FontCollection, Style, Weight
 
 EMOJI_FONT = "Segoe UI Emoji"
 DEFAULT_FONT = "Calibri"
 
 log = logging.getLogger(__name__)
+
 
 def _get_win_folder_with_ctypes(csidl_name: str) -> str:
     import ctypes
@@ -74,6 +75,7 @@ class WindowsVolumeWatcher:
         volume_task = None
 
         async with asyncio.TaskGroup() as tg:
+
             async def watch_for_default_change():
                 nonlocal tg, volume_task
                 log.info("Waiting for collection events")
@@ -98,7 +100,6 @@ class WindowsVolumeWatcher:
 
             volume_task = tg.create_task(volume_change(self.playback_device))
             tg.create_task(watch_for_default_change())
-
 
     async def toggle_mute(self):
         self.playback_device.toggle_mute()

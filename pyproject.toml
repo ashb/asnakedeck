@@ -23,19 +23,14 @@ typer = "^0.7.0"
 audio = ["pulsectl-asyncio", "windows-audio-events"]
 
 [tool.poetry.group.dev.dependencies]
-vulture = "^1.0"
-bandit = "^1.6"
-safety = "^1.8"
-isort = "^5.3"
-flake8-bugbear = "^19.8"
-black = {version = "^22.10.0", allow-prereleases = true}
-mypy = "^0.982"
+safety = "^2.2"
+black = "^22.12.0"
+mypy = "^0.991"
 ipython = "^7.7"
-pytest = "^6.0"
-pytest-cov = "^2.7"
-pep8-naming = "^0.8.2"
-cruft = "^2.2"
+pytest = "^7.0"
 pytest-deadfixtures = "^2.2.1"
+types-pyyaml = "^6.0.12.2"
+ruff = "^0.0.213"
 
 
 [[tool.poetry.source]]
@@ -86,3 +81,9 @@ skip = [
 "emoji" = "asnakedeck.handlers.emoji:Emoji"
 "cycle" = "asnakedeck.handlers.cycle:Cycle"
 "volume" = "asnakedeck.handlers.volume:Volume"
+
+[tool.ruff]
+target-version = "py311"
+line-length = 160
+
+extend-select = ["RUF100"]

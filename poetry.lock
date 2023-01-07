@@ -597,12 +597,10 @@ version = "0.1.0"
 description = ""
 category = "main"
 optional = true
-python-versions = "*"
-develop = false
+python-versions = ">=3.7"
 
-[package.source]
-type = "directory"
-url = "../windows-audio"
+[package.extras]
+tests = ["black", "coverage", "pytest (>=7)", "pytest-asyncio"]
 
 [[package]]
 name = "windows-fonts"
@@ -977,7 +975,9 @@ wcwidth = [
     {file = "wcwidth-0.2.5-py2.py3-none-any.whl", hash = "sha256:beb4802a9cebb9144e99086eff703a642a13d6a0052920003a230f3294bbe784"},
     {file = "wcwidth-0.2.5.tar.gz", hash = "sha256:c4d647b99872929fdb7bdcaa4fbe7f01413ed3d98077df798530e5b04f116c83"},
 ]
-windows-audio-control = []
+windows-audio-control = [
+    {file = "windows_audio_control-0.1.0-cp311-none-win_amd64.whl", hash = "sha256:8883d04aa0a8730ec01738b15c61fbc1a19532f31a76098d2c37ca4b67560b9c"},
+]
 windows-fonts = [
     {file = "windows_fonts-1.0.0a1-cp310-none-win_amd64.whl", hash = "sha256:aa4e73b058f738aff9fe83bcc4e326486aaed10b1f30add9c6e0a77e6cab23c3"},
     {file = "windows_fonts-1.0.0a1-cp311-none-win_amd64.whl", hash = "sha256:fa96f26d57fe169fb911c71c1d37d74d5ad8e3629be7f9a8c96fd19b988f4ddc"},

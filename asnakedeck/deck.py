@@ -38,8 +38,8 @@ class Deck:
 
     def __attrs_post_init__(self):
         platform.CONFIG_DIR.mkdir(parents=True, exist_ok=True)
-        self.hardware.open()
-        self.hardware.read_thread.setName(f"DeckThread-{self.serial_number}")
+        # But don't start the read thread just yet!
+        self.hardware.device.open()
         self.hardware.set_key_callback_async(self.on_keypress)
         self.image_size = self.hardware.key_image_format()["size"]
 
@@ -61,6 +61,11 @@ class Deck:
             self.config_watcher_task.add_done_callback(self.on_task_complete)
         else:
             self.config_watcher_task = None
+
+    def open(self):
+        self.hardware.open()
+        assert(self.hardware.read_thread)
+        self.hardware.read_thread.setName(f"DeckThread-{self.serial_number}")
 
     def __hash__(self):
         return hash(self.serial_number)

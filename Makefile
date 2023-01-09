@@ -6,7 +6,7 @@ help: # Make help to show possible targets
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 
 test:  ## Test the project
-	poetry run pytest --verbosity=2 --log-level=DEBUG --cov="$(CODE)" $(args)
+	poetry run coverage run -m pytest --verbosity=2 --log-level=DEBUG $(args)
 
 build:  ## Build the sdist/wheel packages
 	 poetry build

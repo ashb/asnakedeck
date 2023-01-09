@@ -20,6 +20,9 @@ log = logging.getLogger(__name__)
 def _get_win_folder_with_ctypes(csidl_name: str) -> str:
     import ctypes
 
+    if sys.platform != "win32":
+        raise RuntimeError("Only works on win32 platform")
+
     csidl_const = {
         "CSIDL_APPDATA": 0x1A,
         "CSIDL_COMMON_APPDATA": 0x23,

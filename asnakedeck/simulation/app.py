@@ -110,6 +110,29 @@ class AsyncApp(App):
 
         return layout
 
+    def _set_win32_dark_mode(self):
+        assert sys.platform == "win32"
+
+        import ctypes
+        from ctypes import windll
+
+        from kivy.core.window import Window
+
+        DWMWA_USE_IMMERSIVE_DARK_MODE = 20
+
+        hwnd = Window.get_window_info().window
+
+        try:
+            DwmSetWindowAttribute = windll.dwmapi.DwmSetWindowAttribute
+        except AttributeError:
+            # Not on a version of Windows11 that supports this
+            return
+        val = ctypes.c_int32(1)
+        res = DwmSetWindowAttribute(hwnd, DWMWA_USE_IMMERSIVE_DARK_MODE, ctypes.byref(val), ctypes.sizeof(val))
+
+        if res:
+            raise OSError(ctypes.FormatError(res))
+
     def on_keypress(self, _, idx: int, state: bool):
         asyncio.create_task(self.deck.on_keypress(self.simulation(), idx, state))
 
@@ -122,6 +145,9 @@ class AsyncApp(App):
         self.root.do_layout()
         if list(Window.size) != list(self.root.minimum_size):
             log.info("Resizing window from %r to %r", Window.size, self.root.minimum_size)
+
+        if sys.platform == "win32":
+            self._set_win32_dark_mode()
 
         pm = PluginManager()
         self.deck = Deck(self.simulation(), plugin_manager=pm)  # type: ignore

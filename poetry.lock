@@ -94,7 +94,7 @@ uvloop = ["uvloop (>=0.15.2)"]
 name = "certifi"
 version = "2022.12.7"
 description = "Python package for providing Mozilla's CA Bundle."
-category = "dev"
+category = "main"
 optional = false
 python-versions = ">=3.6"
 files = [
@@ -106,7 +106,7 @@ files = [
 name = "charset-normalizer"
 version = "2.1.1"
 description = "The Real First Universal Charset Detector. Open, modern and actively maintained alternative to Chardet."
-category = "dev"
+category = "main"
 optional = false
 python-versions = ">=3.6.0"
 files = [
@@ -221,6 +221,18 @@ files = [
 ]
 
 [[package]]
+name = "docutils"
+version = "0.19"
+description = "Docutils -- Python Documentation Utilities"
+category = "main"
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "docutils-0.19-py3-none-any.whl", hash = "sha256:5e1de4d849fee02c63b040a4a3fd567f4ab104defd8a5511fbbc24a8a017efbc"},
+    {file = "docutils-0.19.tar.gz", hash = "sha256:33995a6753c30b7f577febfc2c50411fec6aac7f7ffeb7c4cfe5991072dcf9e6"},
+]
+
+[[package]]
 name = "dparse"
 version = "0.6.2"
 description = "A parser for Python dependency files"
@@ -259,7 +271,7 @@ test = ["pytest (>=6)"]
 name = "idna"
 version = "3.4"
 description = "Internationalized Domain Names in Applications (IDNA)"
-category = "dev"
+category = "main"
 optional = false
 python-versions = ">=3.5"
 files = [
@@ -335,6 +347,127 @@ parso = ">=0.8.0,<0.9.0"
 docs = ["Jinja2 (==2.11.3)", "MarkupSafe (==1.1.1)", "Pygments (==2.8.1)", "alabaster (==0.7.12)", "babel (==2.9.1)", "chardet (==4.0.0)", "commonmark (==0.8.1)", "docutils (==0.17.1)", "future (==0.18.2)", "idna (==2.10)", "imagesize (==1.2.0)", "mock (==1.0.1)", "packaging (==20.9)", "pyparsing (==2.4.7)", "pytz (==2021.1)", "readthedocs-sphinx-ext (==2.1.4)", "recommonmark (==0.5.0)", "requests (==2.25.1)", "six (==1.15.0)", "snowballstemmer (==2.1.0)", "sphinx (==1.8.5)", "sphinx-rtd-theme (==0.4.3)", "sphinxcontrib-serializinghtml (==1.1.4)", "sphinxcontrib-websupport (==1.2.4)", "urllib3 (==1.26.4)"]
 qa = ["flake8 (==3.8.3)", "mypy (==0.782)"]
 testing = ["Django (<3.1)", "attrs", "colorama", "docopt", "pytest (<7.0.0)"]
+
+[[package]]
+name = "kivy"
+version = "2.2.0.dev0"
+description = "A software library for rapid development of hardware-accelerated multitouch applications."
+category = "main"
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "Kivy-2.2.0.dev0-cp310-cp310-win32.whl", hash = "sha256:e24f6634f0d7a7eb41ae4440e4468dd6bf765b5ba3f7ee978f910a17d0aeea1a"},
+    {file = "Kivy-2.2.0.dev0-cp310-cp310-win_amd64.whl", hash = "sha256:f4341d9d926dcc46ed565988d4ec1fc74a47317a55b747b03434a81d743827ee"},
+    {file = "Kivy-2.2.0.dev0-cp311-cp311-win32.whl", hash = "sha256:8a91b80bfba65c7c27433fd2f541a7b9e01d973551ee4085f1085a3d771d42a1"},
+    {file = "Kivy-2.2.0.dev0-cp311-cp311-win_amd64.whl", hash = "sha256:cdef1231d3885692460b724fb15fe034ca4853fd2573864fabce7494b7b720d7"},
+    {file = "Kivy-2.2.0.dev0-cp37-cp37m-win32.whl", hash = "sha256:22b671193564885412f7b551fcdf57f99c97af72124ad532b3a37e33223d9a2b"},
+    {file = "Kivy-2.2.0.dev0-cp37-cp37m-win_amd64.whl", hash = "sha256:89a2ed721d3ebb609e534bff2d5de5dfdfc27c44c04eaf44ee3a4bb426c33640"},
+    {file = "Kivy-2.2.0.dev0-cp38-cp38-win32.whl", hash = "sha256:ae4cea55b9f8ed07351d4963e000228720c61d227fe1009fbf89f5e21404a5f9"},
+    {file = "Kivy-2.2.0.dev0-cp38-cp38-win_amd64.whl", hash = "sha256:56d1f71e38883728bf49d2589fe132d32eead56784836e3b85ebbc252737562a"},
+    {file = "Kivy-2.2.0.dev0-cp39-cp39-win32.whl", hash = "sha256:2be81e9e939f86dd932d78b62dcae918e41bcacc673db7caf3c1957156690cec"},
+    {file = "Kivy-2.2.0.dev0-cp39-cp39-win_amd64.whl", hash = "sha256:ae6f108dee6d333f8c4aa7c22f1ccde33ffaea7590943ebcd3750c4a2e22549e"},
+    {file = "Kivy-2.2.0.dev0.tar.gz", hash = "sha256:ca061de1fb3b46753b8be1c56b4d22b6109ba4989c36fd3b79787d989a8b5516"},
+]
+
+[package.dependencies]
+docutils = "*"
+"kivy_deps.angle" = {version = ">=0.3.2,<0.4.0", markers = "sys_platform == \"win32\""}
+"kivy_deps.glew" = {version = ">=0.3.1,<0.4.0", markers = "sys_platform == \"win32\""}
+"kivy_deps.sdl2" = {version = ">=0.5.0,<0.6.0", markers = "sys_platform == \"win32\""}
+Kivy-Garden = ">=0.1.4"
+pygments = "*"
+pypiwin32 = {version = "*", markers = "sys_platform == \"win32\""}
+
+[package.extras]
+angle = ["kivy_deps.angle (>=0.3.2,<0.4.0)"]
+base = ["docutils", "kivy_deps.angle (>=0.3.2,<0.4.0)", "kivy_deps.glew (>=0.3.1,<0.4.0)", "kivy_deps.sdl2 (>=0.5.0,<0.6.0)", "pillow", "pygments", "pypiwin32", "requests"]
+dev = ["flake8", "funcparserlib (==1.0.0a0)", "kivy_deps.glew_dev (>=0.3.1,<0.4.0)", "kivy_deps.gstreamer_dev (>=0.3.3,<0.4.0)", "kivy_deps.sdl2_dev (>=0.5.0,<0.6.0)", "pre-commit", "pyinstaller", "pytest (>=3.6)", "pytest-benchmark", "pytest-cov", "pytest-timeout", "pytest_asyncio (!=0.11.0)", "responses", "sphinx", "sphinxcontrib-actdiag", "sphinxcontrib-blockdiag", "sphinxcontrib-nwdiag", "sphinxcontrib-seqdiag"]
+full = ["docutils", "ffpyplayer", "kivy_deps.angle (>=0.3.2,<0.4.0)", "kivy_deps.glew (>=0.3.1,<0.4.0)", "kivy_deps.gstreamer (>=0.3.3,<0.4.0)", "kivy_deps.sdl2 (>=0.5.0,<0.6.0)", "pillow", "pygments", "pypiwin32"]
+glew = ["kivy_deps.glew (>=0.3.1,<0.4.0)"]
+gstreamer = ["kivy_deps.gstreamer (>=0.3.3,<0.4.0)"]
+media = ["ffpyplayer", "kivy_deps.gstreamer (>=0.3.3,<0.4.0)"]
+sdl2 = ["kivy_deps.sdl2 (>=0.5.0,<0.6.0)"]
+tuio = ["oscpy"]
+
+[package.source]
+type = "legacy"
+url = "https://kivy.org/downloads/simple"
+reference = "kivy"
+
+[[package]]
+name = "kivy-deps-angle"
+version = "0.3.3"
+description = "Repackaged binary dependency of Kivy."
+category = "main"
+optional = false
+python-versions = "*"
+files = [
+    {file = "kivy_deps.angle-0.3.3-cp310-cp310-win32.whl", hash = "sha256:8e571b2c662480a265420d6ded386df208d83272896daf616256672c5648e538"},
+    {file = "kivy_deps.angle-0.3.3-cp310-cp310-win_amd64.whl", hash = "sha256:e48457f6830fb53aaaa6bf3bd63d50120c1bc1c94f207d988cc8071c122456e9"},
+    {file = "kivy_deps.angle-0.3.3-cp311-cp311-win32.whl", hash = "sha256:fdc3de5ead670a8ee0bb411b603cabeaecf7fe277cf99cd70c9585cd964f19a2"},
+    {file = "kivy_deps.angle-0.3.3-cp311-cp311-win_amd64.whl", hash = "sha256:c380fb602782e525deba1200cdc0fd3c03b6b3855edb283d76f68485a185061a"},
+    {file = "kivy_deps.angle-0.3.3-cp37-cp37m-win32.whl", hash = "sha256:0fa32cc718b51b21745b6b7a055e6e171517f567b5900250c49539bae3d69806"},
+    {file = "kivy_deps.angle-0.3.3-cp37-cp37m-win_amd64.whl", hash = "sha256:6336455e59f5b8dd4dd57caca2adf397a48726af8afc48384f4539dccb7b889c"},
+    {file = "kivy_deps.angle-0.3.3-cp38-cp38-win32.whl", hash = "sha256:e3fd1168dd4090cc2ccf650abe209483c0794c5a454360c41b01633888afbba1"},
+    {file = "kivy_deps.angle-0.3.3-cp38-cp38-win_amd64.whl", hash = "sha256:f044d7e6a9f839222e44f9ae0441ae25ff42e35a5c1b7d1ea9a4d0845dd57172"},
+    {file = "kivy_deps.angle-0.3.3-cp39-cp39-win32.whl", hash = "sha256:00a4922a50a55f532722a4419eb394a7a8837d0f78620e2b47f33c6db45a4dc0"},
+    {file = "kivy_deps.angle-0.3.3-cp39-cp39-win_amd64.whl", hash = "sha256:de6dbe3273e95a85f6f96c9f52cc0d29a1f92aa05fd10de886ba8c483021b532"},
+]
+
+[[package]]
+name = "kivy-deps-glew"
+version = "0.3.1"
+description = "Repackaged binary dependency of Kivy."
+category = "main"
+optional = false
+python-versions = "*"
+files = [
+    {file = "kivy_deps.glew-0.3.1-cp310-cp310-win32.whl", hash = "sha256:8f4b3ed15acb62474909b6d41661ffb4da9eb502bb5684301fb2da668f288a58"},
+    {file = "kivy_deps.glew-0.3.1-cp310-cp310-win_amd64.whl", hash = "sha256:aef2d2a93f129d8425c75234e7f6cc0a34b59a4aee67f6d2cd7a5fdfa9915b53"},
+    {file = "kivy_deps.glew-0.3.1-cp311-cp311-win32.whl", hash = "sha256:ee2f80ef7ac70f4b61c50da8101b024308a8c59a57f7f25a6e09762b6c48f942"},
+    {file = "kivy_deps.glew-0.3.1-cp311-cp311-win_amd64.whl", hash = "sha256:22e155ec59ce717387f5d8804811206d200a023ba3d0bc9bbf1393ee28d0053e"},
+    {file = "kivy_deps.glew-0.3.1-cp37-cp37m-win32.whl", hash = "sha256:5bf6a63fe9cc4fe7bbf280ec267ec8c47914020a1175fb22152525ff1837b436"},
+    {file = "kivy_deps.glew-0.3.1-cp37-cp37m-win_amd64.whl", hash = "sha256:d64a8625799fab7a7efeb3661ef8779a7f9c6d80da53eed87a956320f55530fa"},
+    {file = "kivy_deps.glew-0.3.1-cp38-cp38-win32.whl", hash = "sha256:00f4ae0a4682d951266458ddb639451edb24baa54a35215dce889209daf19a06"},
+    {file = "kivy_deps.glew-0.3.1-cp38-cp38-win_amd64.whl", hash = "sha256:3f8b89dcf1846032d7a9c5ef88b0ee9cbd13366e9b4c85ada61e01549a910677"},
+    {file = "kivy_deps.glew-0.3.1-cp39-cp39-win32.whl", hash = "sha256:4e377ed97670dfda619a1b63a82345a8589be90e7c616a458fba2810708810b1"},
+    {file = "kivy_deps.glew-0.3.1-cp39-cp39-win_amd64.whl", hash = "sha256:081a09b92f7e7817f489f8b6b31c9c9623661378de1dce1d6b097af5e7d42b45"},
+]
+
+[[package]]
+name = "kivy-deps-sdl2"
+version = "0.5.1"
+description = "Repackaged binary dependency of Kivy."
+category = "main"
+optional = false
+python-versions = "*"
+files = [
+    {file = "kivy_deps.sdl2-0.5.1-cp310-cp310-win32.whl", hash = "sha256:c4a03e951a76bd5d20edebfd9aedc9fed57d639df3952de43994e59792449016"},
+    {file = "kivy_deps.sdl2-0.5.1-cp310-cp310-win_amd64.whl", hash = "sha256:68327c01c69e06a413a522bd41fd3942818bc488fffa79e0dc66da74cfd8d37c"},
+    {file = "kivy_deps.sdl2-0.5.1-cp311-cp311-win32.whl", hash = "sha256:f38d9d2e96c564a69a9500b2ad2c08ccdceaa6850fd71fb4268fb80986ebf4db"},
+    {file = "kivy_deps.sdl2-0.5.1-cp311-cp311-win_amd64.whl", hash = "sha256:521e019f2c07b67999aa7e955311be88a5c5eaf10eb385e4d4d6cb2bed96ebe1"},
+    {file = "kivy_deps.sdl2-0.5.1-cp37-cp37m-win32.whl", hash = "sha256:6e784ee38672d60159b126482214a2abd1949e04cc671792af9c38b24ce097e1"},
+    {file = "kivy_deps.sdl2-0.5.1-cp37-cp37m-win_amd64.whl", hash = "sha256:129f715bdffa337595c592fddea83be1f96dafc8863419eac8b7bba8e2b1d88f"},
+    {file = "kivy_deps.sdl2-0.5.1-cp38-cp38-win32.whl", hash = "sha256:88826cd5365c9560c5aca01b6dc925569397ef31eeae67be5208ea439f470181"},
+    {file = "kivy_deps.sdl2-0.5.1-cp38-cp38-win_amd64.whl", hash = "sha256:4f0c852f476c5be9b12471d0b451744e2d82c404b7a751496a2c8e43ffd766d0"},
+    {file = "kivy_deps.sdl2-0.5.1-cp39-cp39-win32.whl", hash = "sha256:f97e89a550d55c8ed9eff0a8587b3467f5a574548ff29f7121ec05200bb36f4b"},
+    {file = "kivy_deps.sdl2-0.5.1-cp39-cp39-win_amd64.whl", hash = "sha256:8bc12df21c86e2a5dc9ea98e4d987c29e512a8bf70ce1222843075baa0480680"},
+]
+
+[[package]]
+name = "kivy-garden"
+version = "0.1.5"
+description = ""
+category = "main"
+optional = false
+python-versions = "*"
+files = [
+    {file = "Kivy Garden-0.1.5.tar.gz", hash = "sha256:2b8377378e87501d5d271f33d94f0e44c089884572c64f89c9d609b1f86a2748"},
+    {file = "Kivy_Garden-0.1.5-py3-none-any.whl", hash = "sha256:ef50f44b96358cf10ac5665f27a4751bb34ef54051c54b93af891f80afe42929"},
+]
+
+[package.dependencies]
+requests = "*"
 
 [[package]]
 name = "matplotlib-inline"
@@ -658,7 +791,7 @@ pulsectl = ">=21.10.2,<=22.3.2"
 name = "pygments"
 version = "2.14.0"
 description = "Pygments is a syntax highlighting package written in Python."
-category = "dev"
+category = "main"
 optional = false
 python-versions = ">=3.6"
 files = [
@@ -683,6 +816,21 @@ files = [
 
 [package.extras]
 diagrams = ["jinja2", "railroad-diagrams"]
+
+[[package]]
+name = "pypiwin32"
+version = "223"
+description = ""
+category = "main"
+optional = false
+python-versions = "*"
+files = [
+    {file = "pypiwin32-223-py3-none-any.whl", hash = "sha256:67adf399debc1d5d14dffc1ab5acacb800da569754fafdc576b2a039485aa775"},
+    {file = "pypiwin32-223.tar.gz", hash = "sha256:71be40c1fbd28594214ecaecb58e7aa8b708eabfa0125c8a109ebd51edbd776a"},
+]
+
+[package.dependencies]
+pywin32 = ">=223"
 
 [[package]]
 name = "pytest"
@@ -724,10 +872,84 @@ files = [
 pytest = ">=3.0.0"
 
 [[package]]
+name = "pywin32"
+version = "305"
+description = "Python for Window Extensions"
+category = "main"
+optional = false
+python-versions = "*"
+files = [
+    {file = "pywin32-305-cp310-cp310-win32.whl", hash = "sha256:421f6cd86e84bbb696d54563c48014b12a23ef95a14e0bdba526be756d89f116"},
+    {file = "pywin32-305-cp310-cp310-win_amd64.whl", hash = "sha256:73e819c6bed89f44ff1d690498c0a811948f73777e5f97c494c152b850fad478"},
+    {file = "pywin32-305-cp310-cp310-win_arm64.whl", hash = "sha256:742eb905ce2187133a29365b428e6c3b9001d79accdc30aa8969afba1d8470f4"},
+    {file = "pywin32-305-cp311-cp311-win32.whl", hash = "sha256:19ca459cd2e66c0e2cc9a09d589f71d827f26d47fe4a9d09175f6aa0256b51c2"},
+    {file = "pywin32-305-cp311-cp311-win_amd64.whl", hash = "sha256:326f42ab4cfff56e77e3e595aeaf6c216712bbdd91e464d167c6434b28d65990"},
+    {file = "pywin32-305-cp311-cp311-win_arm64.whl", hash = "sha256:4ecd404b2c6eceaca52f8b2e3e91b2187850a1ad3f8b746d0796a98b4cea04db"},
+    {file = "pywin32-305-cp36-cp36m-win32.whl", hash = "sha256:48d8b1659284f3c17b68587af047d110d8c44837736b8932c034091683e05863"},
+    {file = "pywin32-305-cp36-cp36m-win_amd64.whl", hash = "sha256:13362cc5aa93c2beaf489c9c9017c793722aeb56d3e5166dadd5ef82da021fe1"},
+    {file = "pywin32-305-cp37-cp37m-win32.whl", hash = "sha256:a55db448124d1c1484df22fa8bbcbc45c64da5e6eae74ab095b9ea62e6d00496"},
+    {file = "pywin32-305-cp37-cp37m-win_amd64.whl", hash = "sha256:109f98980bfb27e78f4df8a51a8198e10b0f347257d1e265bb1a32993d0c973d"},
+    {file = "pywin32-305-cp38-cp38-win32.whl", hash = "sha256:9dd98384da775afa009bc04863426cb30596fd78c6f8e4e2e5bbf4edf8029504"},
+    {file = "pywin32-305-cp38-cp38-win_amd64.whl", hash = "sha256:56d7a9c6e1a6835f521788f53b5af7912090674bb84ef5611663ee1595860fc7"},
+    {file = "pywin32-305-cp39-cp39-win32.whl", hash = "sha256:9d968c677ac4d5cbdaa62fd3014ab241718e619d8e36ef8e11fb930515a1e918"},
+    {file = "pywin32-305-cp39-cp39-win_amd64.whl", hash = "sha256:50768c6b7c3f0b38b7fb14dd4104da93ebced5f1a50dc0e834594bff6fbe1271"},
+]
+
+[[package]]
+name = "pyyaml"
+version = "6.0"
+description = "YAML parser and emitter for Python"
+category = "main"
+optional = false
+python-versions = ">=3.6"
+files = [
+    {file = "PyYAML-6.0-cp310-cp310-macosx_10_9_x86_64.whl", hash = "sha256:d4db7c7aef085872ef65a8fd7d6d09a14ae91f691dec3e87ee5ee0539d516f53"},
+    {file = "PyYAML-6.0-cp310-cp310-macosx_11_0_arm64.whl", hash = "sha256:9df7ed3b3d2e0ecfe09e14741b857df43adb5a3ddadc919a2d94fbdf78fea53c"},
+    {file = "PyYAML-6.0-cp310-cp310-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:77f396e6ef4c73fdc33a9157446466f1cff553d979bd00ecb64385760c6babdc"},
+    {file = "PyYAML-6.0-cp310-cp310-manylinux_2_17_s390x.manylinux2014_s390x.whl", hash = "sha256:a80a78046a72361de73f8f395f1f1e49f956c6be882eed58505a15f3e430962b"},
+    {file = "PyYAML-6.0-cp310-cp310-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_12_x86_64.manylinux2010_x86_64.whl", hash = "sha256:f84fbc98b019fef2ee9a1cb3ce93e3187a6df0b2538a651bfb890254ba9f90b5"},
+    {file = "PyYAML-6.0-cp310-cp310-win32.whl", hash = "sha256:2cd5df3de48857ed0544b34e2d40e9fac445930039f3cfe4bcc592a1f836d513"},
+    {file = "PyYAML-6.0-cp310-cp310-win_amd64.whl", hash = "sha256:daf496c58a8c52083df09b80c860005194014c3698698d1a57cbcfa182142a3a"},
+    {file = "PyYAML-6.0-cp311-cp311-macosx_10_9_x86_64.whl", hash = "sha256:d4b0ba9512519522b118090257be113b9468d804b19d63c71dbcf4a48fa32358"},
+    {file = "PyYAML-6.0-cp311-cp311-macosx_11_0_arm64.whl", hash = "sha256:81957921f441d50af23654aa6c5e5eaf9b06aba7f0a19c18a538dc7ef291c5a1"},
+    {file = "PyYAML-6.0-cp311-cp311-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:afa17f5bc4d1b10afd4466fd3a44dc0e245382deca5b3c353d8b757f9e3ecb8d"},
+    {file = "PyYAML-6.0-cp311-cp311-manylinux_2_17_s390x.manylinux2014_s390x.whl", hash = "sha256:dbad0e9d368bb989f4515da330b88a057617d16b6a8245084f1b05400f24609f"},
+    {file = "PyYAML-6.0-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:432557aa2c09802be39460360ddffd48156e30721f5e8d917f01d31694216782"},
+    {file = "PyYAML-6.0-cp311-cp311-win32.whl", hash = "sha256:bfaef573a63ba8923503d27530362590ff4f576c626d86a9fed95822a8255fd7"},
+    {file = "PyYAML-6.0-cp311-cp311-win_amd64.whl", hash = "sha256:01b45c0191e6d66c470b6cf1b9531a771a83c1c4208272ead47a3ae4f2f603bf"},
+    {file = "PyYAML-6.0-cp36-cp36m-macosx_10_9_x86_64.whl", hash = "sha256:897b80890765f037df3403d22bab41627ca8811ae55e9a722fd0392850ec4d86"},
+    {file = "PyYAML-6.0-cp36-cp36m-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:50602afada6d6cbfad699b0c7bb50d5ccffa7e46a3d738092afddc1f9758427f"},
+    {file = "PyYAML-6.0-cp36-cp36m-manylinux_2_17_s390x.manylinux2014_s390x.whl", hash = "sha256:48c346915c114f5fdb3ead70312bd042a953a8ce5c7106d5bfb1a5254e47da92"},
+    {file = "PyYAML-6.0-cp36-cp36m-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_12_x86_64.manylinux2010_x86_64.whl", hash = "sha256:98c4d36e99714e55cfbaaee6dd5badbc9a1ec339ebfc3b1f52e293aee6bb71a4"},
+    {file = "PyYAML-6.0-cp36-cp36m-win32.whl", hash = "sha256:0283c35a6a9fbf047493e3a0ce8d79ef5030852c51e9d911a27badfde0605293"},
+    {file = "PyYAML-6.0-cp36-cp36m-win_amd64.whl", hash = "sha256:07751360502caac1c067a8132d150cf3d61339af5691fe9e87803040dbc5db57"},
+    {file = "PyYAML-6.0-cp37-cp37m-macosx_10_9_x86_64.whl", hash = "sha256:819b3830a1543db06c4d4b865e70ded25be52a2e0631ccd2f6a47a2822f2fd7c"},
+    {file = "PyYAML-6.0-cp37-cp37m-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:473f9edb243cb1935ab5a084eb238d842fb8f404ed2193a915d1784b5a6b5fc0"},
+    {file = "PyYAML-6.0-cp37-cp37m-manylinux_2_17_s390x.manylinux2014_s390x.whl", hash = "sha256:0ce82d761c532fe4ec3f87fc45688bdd3a4c1dc5e0b4a19814b9009a29baefd4"},
+    {file = "PyYAML-6.0-cp37-cp37m-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_12_x86_64.manylinux2010_x86_64.whl", hash = "sha256:231710d57adfd809ef5d34183b8ed1eeae3f76459c18fb4a0b373ad56bedcdd9"},
+    {file = "PyYAML-6.0-cp37-cp37m-win32.whl", hash = "sha256:c5687b8d43cf58545ade1fe3e055f70eac7a5a1a0bf42824308d868289a95737"},
+    {file = "PyYAML-6.0-cp37-cp37m-win_amd64.whl", hash = "sha256:d15a181d1ecd0d4270dc32edb46f7cb7733c7c508857278d3d378d14d606db2d"},
+    {file = "PyYAML-6.0-cp38-cp38-macosx_10_9_x86_64.whl", hash = "sha256:0b4624f379dab24d3725ffde76559cff63d9ec94e1736b556dacdfebe5ab6d4b"},
+    {file = "PyYAML-6.0-cp38-cp38-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:213c60cd50106436cc818accf5baa1aba61c0189ff610f64f4a3e8c6726218ba"},
+    {file = "PyYAML-6.0-cp38-cp38-manylinux_2_17_s390x.manylinux2014_s390x.whl", hash = "sha256:9fa600030013c4de8165339db93d182b9431076eb98eb40ee068700c9c813e34"},
+    {file = "PyYAML-6.0-cp38-cp38-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_12_x86_64.manylinux2010_x86_64.whl", hash = "sha256:277a0ef2981ca40581a47093e9e2d13b3f1fbbeffae064c1d21bfceba2030287"},
+    {file = "PyYAML-6.0-cp38-cp38-win32.whl", hash = "sha256:d4eccecf9adf6fbcc6861a38015c2a64f38b9d94838ac1810a9023a0609e1b78"},
+    {file = "PyYAML-6.0-cp38-cp38-win_amd64.whl", hash = "sha256:1e4747bc279b4f613a09eb64bba2ba602d8a6664c6ce6396a4d0cd413a50ce07"},
+    {file = "PyYAML-6.0-cp39-cp39-macosx_10_9_x86_64.whl", hash = "sha256:055d937d65826939cb044fc8c9b08889e8c743fdc6a32b33e2390f66013e449b"},
+    {file = "PyYAML-6.0-cp39-cp39-macosx_11_0_arm64.whl", hash = "sha256:e61ceaab6f49fb8bdfaa0f92c4b57bcfbea54c09277b1b4f7ac376bfb7a7c174"},
+    {file = "PyYAML-6.0-cp39-cp39-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:d67d839ede4ed1b28a4e8909735fc992a923cdb84e618544973d7dfc71540803"},
+    {file = "PyYAML-6.0-cp39-cp39-manylinux_2_17_s390x.manylinux2014_s390x.whl", hash = "sha256:cba8c411ef271aa037d7357a2bc8f9ee8b58b9965831d9e51baf703280dc73d3"},
+    {file = "PyYAML-6.0-cp39-cp39-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_12_x86_64.manylinux2010_x86_64.whl", hash = "sha256:40527857252b61eacd1d9af500c3337ba8deb8fc298940291486c465c8b46ec0"},
+    {file = "PyYAML-6.0-cp39-cp39-win32.whl", hash = "sha256:b5b9eccad747aabaaffbc6064800670f0c297e52c12754eb1d976c57e4f74dcb"},
+    {file = "PyYAML-6.0-cp39-cp39-win_amd64.whl", hash = "sha256:b3d267842bf12586ba6c734f89d1f5b871df0273157918b0ccefa29deb05c21c"},
+    {file = "PyYAML-6.0.tar.gz", hash = "sha256:68fb519c14306fec9720a2a5b45bc9f0c8d1b9c72adf45c37baedfcd949c35a2"},
+]
+
+[[package]]
 name = "requests"
 version = "2.28.1"
 description = "Python HTTP for Humans."
-category = "dev"
+category = "main"
 optional = false
 python-versions = ">=3.7, <4"
 files = [
@@ -976,7 +1198,7 @@ files = [
 name = "urllib3"
 version = "1.26.13"
 description = "HTTP library with thread-safe connection pooling, file post, and more."
-category = "dev"
+category = "main"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*, !=3.5.*"
 files = [
@@ -1035,9 +1257,9 @@ files = [
 tests = ["black", "coverage", "pytest (>=7)"]
 
 [extras]
-audio = ["pulsectl-asyncio"]
+audio = ["pulsectl-asyncio", "windows-audio-control"]
 
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "80f57e3b0310991ce24d4b62ac4e6d149788f9ea618edd5ae2f6b3a4755711c8"
+content-hash = "a4fcb9f14b680ca271c6bc99eac071c2b0b40bacfbad595f33d67654a257734e"

@@ -14,16 +14,13 @@ log = logging.getLogger(__name__)
 
 @attr.define
 class Volume(KeyHandler):
-    impl: Any = attr.ib(init=False)
+    impl: platform.AudioVolumeWatcher = attr.ib(init=False)
 
     task: asyncio.Task | None = None
 
     @impl.default
     def _impl_default(self):
-        if platform.WINDOWS:
-            return platform.WindowsVolumeWatcher(handler=self.on_volume_change)
-        else:
-            return platform.PulseVolumeWatcher(handler=self.on_volume_change)
+        return platform.AudioVolumeWatcher(handler=self.on_volume_change)
 
     async def loop(self):
         await self.impl.run()
